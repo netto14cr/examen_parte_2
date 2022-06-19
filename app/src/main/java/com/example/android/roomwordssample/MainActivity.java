@@ -31,6 +31,11 @@ import android.widget.Toast;
 
 import java.util.List;
 
+/*
+ * Nombre: MainActivity
+ * Estudienate: Néstor David Leiva Mora
+ * Laboratorio IV
+ */
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
-        final WordListAdapter adapter = new WordListAdapter(this);
+        final WordListAdapter adapter = new WordListAdapter(this,mWordViewModel);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 

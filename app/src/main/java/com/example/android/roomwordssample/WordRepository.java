@@ -54,6 +54,10 @@ class WordRepository {
     void insert(Word word) {
         new insertAsyncTask(mWordDao).execute(word);
     }
+    // Method for executing the task of deleting a word
+    void delete(Word word) {
+        new deleteWordTask(mWordDao).execute(word);
+    }
 
     private static class insertAsyncTask extends AsyncTask<Word, Void, Void> {
 
@@ -66,6 +70,25 @@ class WordRepository {
         @Override
         protected Void doInBackground(final Word... params) {
             mAsyncTaskDao.insert(params[0]);
+            return null;
+        }
+    }
+
+    /*
+        Delete method implemented in word Repository, this class implements this task type method,
+        which in turn is called from the WordViewModel class
+     */
+    private static class deleteWordTask extends AsyncTask<Word, Void, Void> {
+
+        private WordDao mAsyncTaskDao;
+
+        deleteWordTask(WordDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final Word... params) {
+            mAsyncTaskDao.delete(params[0]);
             return null;
         }
     }
