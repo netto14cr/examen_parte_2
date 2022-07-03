@@ -38,7 +38,7 @@ public class Word {
     @PrimaryKey
     @NonNull
     @ColumnInfo(name = "word")
-    private final String mWord;
+    private String mWord;
 
     public Word(@NonNull String word) {
         this.mWord = word;
@@ -48,4 +48,6 @@ public class Word {
     public String getWord() {
         return this.mWord;
     }
+
+    public void setmWord(@NonNull String mWord) { this.mWord = mWord; }
 }

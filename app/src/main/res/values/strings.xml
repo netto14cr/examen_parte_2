@@ -18,4 +18,6 @@ limitations under the License. -->
     <string name="hint_word">Word…</string>
     <string name="button_save">Save</string>
     <string name="empty_not_saved">Word not saved because it is empty.</string>
+    <string name="Camera_permission_granted">The function of camera is required permissions.</string>
+    <string name="Camera_message_permission">Permits have been granted</string>
 </resources>
