@@ -19,6 +19,8 @@ package com.example.android.roomwordssample;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -31,7 +33,6 @@ import android.widget.EditText;
 public class NewWordActivity extends AppCompatActivity {
 
     public static final String EXTRA_REPLY = "com.example.android.wordlistsql.REPLY";
-
     private EditText mEditWordView;
 
     @Override

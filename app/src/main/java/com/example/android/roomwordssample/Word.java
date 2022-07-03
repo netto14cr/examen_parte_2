@@ -16,6 +16,9 @@ package com.example.android.roomwordssample;
  * limitations under the License.
  */
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -39,6 +42,7 @@ public class Word {
     @NonNull
     @ColumnInfo(name = "word")
     private String mWord;
+
 
     public Word(@NonNull String word) {
         this.mWord = word;

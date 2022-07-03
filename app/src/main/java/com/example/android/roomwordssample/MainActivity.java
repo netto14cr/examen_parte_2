@@ -19,9 +19,13 @@ package com.example.android.roomwordssample;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -29,7 +33,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
+
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -42,13 +50,15 @@ import java.util.Objects;
  * Laboratorio IV
  */
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity<selectedImgView> extends AppCompatActivity {
 
     public static final int NEW_WORD_ACTIVITY_REQUEST_CODE = 1;
+    private static final int REQUEST_RESPONSE = 1;
 
     private WordViewModel mWordViewModel;
+    public static final int CAMERA_RESQUEST_CODE = 101;
+    public static final int GALLERY_REQUEST_CODE =100;
     ImageView selectedImgView;
-    public static final int CAMERA_RESQUEST_CODE = 102;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +72,13 @@ public class MainActivity extends AppCompatActivity {
         final WordListAdapter adapter = new WordListAdapter(this,mWordViewModel);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        selectedImgView=findViewById(R.id.imgView);
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            int image_link = bundle.getInt("img_view");
+            selectedImgView.setImageResource(image_link);
+        }
 
         // Get a new or existing ViewModel from the ViewModelProvider.
         mWordViewModel = ViewModelProviders.of(this).get(WordViewModel.class);
@@ -94,10 +111,24 @@ public class MainActivity extends AppCompatActivity {
             Word word = new Word(data.getStringExtra(NewWordActivity.EXTRA_REPLY));
             mWordViewModel.insert(word);
         }
-        else if (requestCode == CAMERA_RESQUEST_CODE && resultCode == RESULT_OK){
-            Bitmap img= (Bitmap) Objects.requireNonNull(Objects.requireNonNull(data).getExtras()).get("data");
-            selectedImgView.setImageBitmap(img);
+
+        else if (requestCode==RESULT_OK){
+            Toast.makeText(this, data.getStringExtra(CameraActivity.EXTRA_DATA), Toast.LENGTH_SHORT).show();
         }
+        else if (requestCode == CAMERA_RESQUEST_CODE) {
+            Bundle extras = data.getExtras();
+            assert extras != null;
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            //selectedImgView.setImageBitmap(imageBitmap);
+
+        } else if (requestCode == GALLERY_REQUEST_CODE) {
+            if (data.getData() != null) {
+                Uri imageUri = data.getData();
+            }
+        }
+
+
+
         else {
             Toast.makeText(getApplicationContext(), R.string.empty_not_saved, Toast.LENGTH_LONG).show();
         }
@@ -113,4 +144,5 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), R.string.Camera_message_permission, Toast.LENGTH_LONG).show();
         }
     }
+
 }

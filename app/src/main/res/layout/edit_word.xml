@@ -33,18 +33,11 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/galeryButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="select from galery" />
-
-            <Button
                 android:id="@+id/camaraButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Select from Camara" />
+                android:text="Select new Image" />
         </LinearLayout>
 
     </LinearLayout>

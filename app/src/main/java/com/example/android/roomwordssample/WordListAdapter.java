@@ -32,13 +32,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,12 +49,13 @@ import java.util.List;
 public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordViewHolder> {
 
     public static final int REQUEST_CODE_CAMERA = 101;
-    public static final int CAMERA_RESQUEST_CODE = 102;
-    private static final int TAKE_PICTURE = 1111;
+    public static final int CAMERA_ACTIVITY_REQUEST_CODE=1;
     private final WordListAdapter adapter;
     private WordViewModel mWordViewModel;
+    private CameraActivity mCameraActivity;
     private ViewGroup _parent;
-    ImageView selectedImgView;
+    private Uri imageUri;
+    private Context contex;
 
 
 
@@ -74,6 +75,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
     WordListAdapter(Context context, WordViewModel wordViewModel) {
         mWordViewModel = wordViewModel;
         mInflater = LayoutInflater.from(context);
+        contex=context;
         adapter = this;
     }
 
@@ -96,15 +98,12 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
             @Override
             public void onClick(View view) {
                 View _inflater = mInflater.inflate(R.layout.edit_word, _parent, false);
-
-
                 final EditText editText;
                 final Button camaraButton;
                 final Button galeryButton;
 
                 editText = (EditText) _inflater.findViewById(R.id.word_edit_value);
                 camaraButton = (Button) _inflater.findViewById(R.id.camaraButton);
-                galeryButton = (Button) _inflater.findViewById(R.id.galeryButton);
                 editText.setText(current.getWord());
 
                 // Use of an alert type window to ask the user and confirm the action he wants to perform
@@ -130,14 +129,6 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
                         }
                     }
                 });
-
-                galeryButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(v.getContext(),"Hola boton galery", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
                 message.setPositiveButton("Save edit", new DialogInterface.OnClickListener() {
                     // If you click the save edit button, the word is edit from in the list.
                     public void onClick(DialogInterface message, int idWork) {
@@ -156,14 +147,10 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
             }
 
             private void openDeviceCamera(View v) {
-                Toast.makeText(v.getContext(), R.string.Camera_permission_granted, Toast.LENGTH_LONG).show();
-                Intent cameraItent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                Activity activityCamera = (Activity) v.getContext();
-                activityCamera.startActivityForResult(cameraItent, CAMERA_RESQUEST_CODE);
-
-
+                ///Toast.makeText(v.getContext(), R.string.Camera_permission_granted, Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(v.getContext(), CameraActivity.class);
+                v.getContext().startActivity(intent);
             }
-
         });
 
         /*

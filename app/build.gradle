@@ -5,6 +5,7 @@ android {
     defaultConfig {
         applicationId "com.example.android.roomwordssample"
         minSdkVersion 20
+        //noinspection ExpiredTargetSdkVersion
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -16,6 +17,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -26,6 +31,8 @@ dependencies {
     // Dependencies for working with Architecture components
     // You'll probably have to update the version numbers in guild.gradle (Project)
     implementation "androidx.room:room-runtime:$rootProject.roomVersion"
+    androidTestImplementation 'org.junit.jupiter:junit-jupiter'
+    androidTestImplementation 'org.junit.jupiter:junit-jupiter'
     annotationProcessor "androidx.room:room-compiler:$rootProject.roomVersion"
     androidTestImplementation "androidx.room:room-testing:$rootProject.roomVersion"
 

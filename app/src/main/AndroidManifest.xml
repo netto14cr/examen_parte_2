@@ -2,10 +2,33 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.android.roomwordssample">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.CAMERA"  android:required="true"/>
+    <uses-feature
+        android:name="android.hardware.camera2"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission
+        android:name="android.permission.CAMERA"
+        android:required="true" />
+
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.IMAGE_CAPTURE" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.PICK" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.vIEW" />
+        </intent>
+    </queries>
 
     <application
         android:allowBackup="true"
@@ -14,6 +37,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.android.roomwordssample.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths">
+            </meta-data>
+        </provider>
+
+        <meta-data
+            android:name="com.google.android.actions"
+            android:resource="@xml/file_paths" />
+
+        <activity
+            android:name=".CameraActivity"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
@@ -24,7 +66,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".NewWordActivity"></activity>
+        <activity android:name=".NewWordActivity" />
     </application>
+
+
+
 
 </manifest>
