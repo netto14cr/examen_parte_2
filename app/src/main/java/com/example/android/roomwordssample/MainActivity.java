@@ -47,7 +47,7 @@ import java.util.Objects;
 /*
  * Nombre: MainActivity
  * Estudienate: Néstor David Leiva Mora
- * Laboratorio IV
+ * Examen II
  */
 
 public class MainActivity<selectedImgView> extends AppCompatActivity {

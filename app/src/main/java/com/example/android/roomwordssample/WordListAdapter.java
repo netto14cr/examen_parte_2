@@ -91,71 +91,97 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
     public void onBindViewHolder(WordViewHolder holder, @SuppressLint("RecyclerView") int position) {
         Word current = mWords.get(position);
         holder.wordItemView.setText(current.getWord());
-        /*
-        The on click event is defined when a word from the list is touched one click in the work list
-         */
-        holder.wordItemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                View _inflater = mInflater.inflate(R.layout.edit_word, _parent, false);
-                final EditText editText;
-                final Button camaraButton;
-                final Button galeryButton;
-
-                editText = (EditText) _inflater.findViewById(R.id.word_edit_value);
-                camaraButton = (Button) _inflater.findViewById(R.id.camaraButton);
-                editText.setText(current.getWord());
-
-                // Use of an alert type window to ask the user and confirm the action he wants to perform
-                AlertDialog.Builder message = new AlertDialog.Builder(mInflater.getContext());
-                message.setTitle("Do you need edit the word ?");
-                message.setMessage("Original word: "+current.getWord());
-                message.setView(_inflater);
-                //message.setView(_inflaterImg);
-                message.setCancelable(false);
-
-                camaraButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(v.getContext(),"Hola boton camara", Toast.LENGTH_SHORT).show();
-                        makeCamaraPermisions(v);
-                    }
-
-                    private void makeCamaraPermisions(View v ) {
-                        if (ContextCompat.checkSelfPermission(v.getContext(), Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED){
-                            ActivityCompat.requestPermissions((Activity) v.getContext(), new String[]{Manifest.permission.CAMERA}, REQUEST_CODE_CAMERA);
-                        }else{
-                            openDeviceCamera(v);
-                        }
-                    }
-                });
-                message.setPositiveButton("Save edit", new DialogInterface.OnClickListener() {
-                    // If you click the save edit button, the word is edit from in the list.
-                    public void onClick(DialogInterface message, int idWork) {
-                        current.setmWord(editText.getText().toString());
-                        mWordViewModel.update(current);
-                        adapter.notifyItemChanged(position);
-                    }
-                });
-                // If you click cancel, the delete action is aborted.
-                message.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface message, int idWork) {
-                        message.dismiss();
-                    }
-                });
-                message.show();
-            }
-
-            private void openDeviceCamera(View v) {
-                ///Toast.makeText(v.getContext(), R.string.Camera_permission_granted, Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(v.getContext(), CameraActivity.class);
-                v.getContext().startActivity(intent);
-            }
-        });
 
         /*
         The on Long click event is defined when a word from the list is touched for few seconds in the work list
          */
+        holder.wordItemView.setOnLongClickListener((View.OnLongClickListener) view -> {
+            View _inflater = mInflater.inflate(R.layout.edit_word, _parent, false);
+            final EditText editText;
+            final Button camaraButton;
+            final Button galeryButton;
+
+            editText = (EditText) _inflater.findViewById(R.id.word_edit_value);
+            camaraButton = (Button) _inflater.findViewById(R.id.camaraButton);
+            editText.setText(current.getWord());
+
+            // Use of an alert type window to ask the user and confirm the action he wants to perform
+            AlertDialog.Builder message = new AlertDialog.Builder(mInflater.getContext());
+            message.setTitle("Do you need edit the word ?");
+            message.setMessage("Original word: " + current.getWord());
+            message.setView(_inflater);
+            //message.setView(_inflaterImg);
+            message.setCancelable(false);
+
+            camaraButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(v.getContext(), "Open camera", Toast.LENGTH_SHORT).show();
+                    makeCamaraPermisions(v);
+                }
+
+                private void makeCamaraPermisions(View v) {
+                    if (ContextCompat.checkSelfPermission(v.getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions((Activity) v.getContext(), new String[]{Manifest.permission.CAMERA}, REQUEST_CODE_CAMERA);
+                    } else {
+                            ///Toast.makeText(v.getContext(), R.string.Camera_permission_granted, Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(v.getContext(), CameraActivity.class);
+                            v.getContext().startActivity(intent);
+                    }
+                }
+            });
+            message.setPositiveButton("Save edit", new DialogInterface.OnClickListener() {
+                // If you click the save edit button, the word is edit from in the list.
+                public void onClick(DialogInterface message, int idWork) {
+                    current.setmWord(editText.getText().toString());
+                    mWordViewModel.update(current);
+                    adapter.notifyItemChanged(position);
+                }
+            });
+            // If you click cancel, the delete action is aborted.
+            message.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface message, int idWork) {
+                    message.dismiss();
+                }
+            });
+            message.show();
+            return false;
+        });
+
+
+        holder.wordItemView.setOnClickListener(new DobleClickListener() {
+            @Override
+            public void onDoubleClick(View v) {
+                View _inflater2 = mInflater.inflate(R.layout.edit_word2, _parent, false);
+                final EditText editText2;
+                editText2 = (EditText) _inflater2.findViewById(R.id.word_text2);
+
+                editText2.setText(current.getWord());
+                AlertDialog.Builder message2 = new AlertDialog.Builder(mInflater.getContext());
+                message2.setTitle("Do you need edit the word ?");
+                message2.setMessage("Original word: "+current.getWord());
+                message2.setView(_inflater2);
+                message2.setCancelable(false);
+                message2.setPositiveButton("Edit", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface message2, int idWork2) {
+                        current.setmWord(editText2.getText().toString());
+                        mWordViewModel.update(current);
+                        adapter.notifyItemChanged(position);
+                    }
+                });
+                message2.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface message2, int idWork2) {
+                        message2.dismiss();
+                    }
+                });
+                message2.show();
+            }
+        });
+        
+        
+        /*
+        The on Long click event is defined when a word from the list is touched for few seconds in the work list
+
         holder.wordItemView.setOnLongClickListener((View.OnLongClickListener) view -> {
 
             // Use of an alert type window to ask the user and confirm the action he wants to perform
@@ -178,6 +204,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
             message.show();
             return false;
         });
+        */
 
     }
 
@@ -193,5 +220,3 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
         return mWords.size();
     }
 }
-
-
